@@ -6,7 +6,7 @@ const input = document.getElementById('input')
 const channel = createChannel('c')
 channel.init()
 
-channel.on(text => {
+channel.onMessage(text => {
   addMessage(text)
 })
 
