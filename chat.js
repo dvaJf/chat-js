@@ -4,7 +4,7 @@ const messagesEl = document.getElementById('messages')
 const form = document.getElementById('form')
 const input = document.getElementById('input')
 const channel = createChannel('c')
-channel.init()
+
 
 channel.onMessage(text => {
   addMessage(text)
