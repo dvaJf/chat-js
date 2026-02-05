@@ -7,7 +7,10 @@ class BroadcastChannelCore {
     if (typeof BroadcastChannel === 'undefined') {
       throw new Error('BroadcastChannel не поддерживается')
     }
-
+    if (
+      typeof crypto === 'undefined' || typeof crypto.randomUUID !== 'function') {
+      throw new Error('crypto.randomUUID не поддерживается')
+    }
     this.channel = new BroadcastChannel(name)
     this.listeners = new Set()
     this.destroyed = false
