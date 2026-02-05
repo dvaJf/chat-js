@@ -5,7 +5,7 @@ export function createChannel(name) {
 class BroadcastChannelCore {
   constructor(name) {
     if (typeof BroadcastChannel === 'undefined') {
-      throw new Error('Ошибка броадкаст не подерживается')
+      throw new Error('BroadcastChannel не поддерживается')
     }
 
     this.channel = new BroadcastChannel(name)
@@ -49,11 +49,21 @@ class BroadcastChannelCore {
     if (typeof handler !== 'function') {
       throw new Error('Ошибка в данных сообщении')
     }
-
+    
     this.listeners.add(handler)
-    return () => {
-      this.listeners.delete(handler)
+
+    return handler
+  }
+
+  offMessage(handler) {
+    this._assertAlive()
+
+    if (typeof handler !== 'function') {
+      throw new Error('Ошибка в данных сообщении')
     }
+
+    this.listeners.delete(handler)
+
   }
 
   destroy() {
