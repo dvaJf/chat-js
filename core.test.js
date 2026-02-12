@@ -112,3 +112,26 @@ test('onMessage после destroy кидает ошибку', () => {
   channel.destroy()
   expect(() => channel.onMessage(() => {})).toThrow()
 })
+
+test('сообщения не приходят в каналы с другими именами', () => {
+  const channelA = createChannel('a')
+  const channelB = createChannel('b')
+
+  let receivedInB = false
+
+  channelB.onMessage(() => {
+    receivedInB = true
+  })
+
+  channelA.send('тестовое сообщение')
+
+  return new Promise(resolve => {
+    setTimeout(() => {
+      expect(receivedInB).toBe(false)
+
+      channelA.destroy()
+      channelB.destroy()
+      resolve()
+    }, 10)
+  })
+})

@@ -12,7 +12,7 @@ class BroadcastChannelCore {
       throw new Error('crypto.randomUUID не поддерживается')
     }
     this.channel = new BroadcastChannel(name)
-    this.listeners = new Set()
+    this.listeners = [] 
     this.destroyed = false
     this.senderId = crypto.randomUUID()
 
@@ -52,8 +52,8 @@ class BroadcastChannelCore {
     if (typeof handler !== 'function') {
       throw new Error('Ошибка в данных сообщении')
     }
-    
-    this.listeners.add(handler)
+
+    this.listeners.push(handler) 
 
     return handler
   }
@@ -65,14 +65,13 @@ class BroadcastChannelCore {
       throw new Error('Ошибка в данных сообщении')
     }
 
-    this.listeners.delete(handler)
-
+    this.listeners = this.listeners.filter(cb => cb !== handler)
   }
 
   destroy() {
     if (this.destroyed) return
     this.destroyed = true
-    this.listeners.clear()
+    this.listeners = []
     this.channel.close()
   }
 }
